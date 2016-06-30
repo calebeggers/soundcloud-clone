@@ -1,0 +1,23 @@
+* {
+	box-sizing: border-box;
+}
+
+h1 {
+	text-align: center;
+	font-size: 30px;
+}
+
+.container  {
+	margin: 20px;
+}
+
+.track {
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+}
+
+.track img {
+	height: 100px;
+	width: 100px;
+}
