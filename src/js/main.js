@@ -10,7 +10,19 @@ console.log($.ajax({
 
 $.ajax({
 	url: `${baseURL}/tracks${clientID}`
-	}).then(fillList);
+	}).then(function(response){
+		fillList(response)
+		$(".track").on('click', function (e) {
+		console.log(this.dataset.title)
+		$(".player").html(
+			`<audio controls="controls">Your browser does not support the <code>audio</code> element.
+				<source src="${this.dataset.stream_url}${clientID}"</source>
+			</audio>
+				<span>${this.dataset.title} is now playing.</span>
+			`
+		)
+	})
+	});
 
 $("#button").on('click', function (e) {
 	e.preventDefault();
@@ -20,7 +32,20 @@ $("#button").on('click', function (e) {
 		data: {
 			q: searchTerm
 		}
-	}).then(fillList);
+	}).then(function(response){
+		fillList(response)
+		$(".track").on('click', function (e) {
+		console.log(this.dataset.title)
+		$(".player").html(
+			`<audio controls="controls">Your browser does not support the <code>audio</code> element.
+				<source src="${this.dataset.stream_url}${clientID}"</source>
+			</audio>
+				<span>${this.dataset.title} is now playing.</span>
+			`
+		)
+	})
+	});
+
 })
 
 function imageCheck (obj) {
@@ -33,9 +58,9 @@ function imageCheck (obj) {
 
 function fillList (response) {
 	console.log(response);
-	response.forEach(function (obj) {
-		$(".track-list").append(
-		`<div class="track">
+	$(".track-list").html(response.map(function (obj) {
+		console.log(obj.title)
+		return `<div class="track" data-stream_url=${obj.stream_url} data-title="${obj.title}" >
 			<img src="${imageCheck(obj)}">
 			<div class="song">
 				<span>${obj.title}</span>
@@ -43,15 +68,7 @@ function fillList (response) {
 			<div class="band">
 				<span>${obj.user.username}</span>
 			</div>
-		</div>`)
-		$(".track").on('click', function (e) {
-			$(".player").html(
-				`<audio controls="controls">Your browser does not support the <code>audio</code> element.
-					<source src="${obj.stream_url}${clientID}"</source>
-				</audio>
-				<span class="song">Now Playing: ${obj.title}</span>
-				`
-			)
-		})
-	});
+		</div>`
+
+	}));
 }
